@@ -11,10 +11,10 @@ class DbSessionMiddleware(BaseMiddleware):
         async with async_session() as session:
             data["db"] = session
 
-        try:
-            result = await handler(event)
-            await session.commit()
-            return result
-        except Exception:
-            await session.rollback()
-            raise
+            try:
+                result = await handler(event, data)
+                await session.commit()
+                return result
+            except Exception:
+                await session.rollback()
+                raise

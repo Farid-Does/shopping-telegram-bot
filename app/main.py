@@ -1,10 +1,12 @@
 import asyncio
 from bot import BOT, dp
+from handlers.start_handlers import start_router
+from middlewares.db_session_middleware import DbSessionMiddleware
 
 
+dp.message.middleware(DbSessionMiddleware())
+dp.include_router(start_router)
 
-dp.message.middleware()
-dp.include_router()
 
 async def main():
     print ("bot is running...")
