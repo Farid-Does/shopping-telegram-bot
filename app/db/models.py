@@ -119,6 +119,18 @@ class Category(Base):
     children: Mapped[list["Category"]] = relationship(back_populates="parent")
     products: Mapped[list["Product"]] = relationship(secondary=product_category, back_populates="categories")
 
+    @classmethod
+    async def get_all_title(cls, db: AsyncSession):
+        result = await db.execute(select(cls.title))
+        return [row[0] for row in result.fetchall()]
+
+    @classmethod
+    async def get_by_title(cls, db: AsyncSession, title: str):
+        result = await db.execute(
+            select(cls).where(cls.title == title)
+        )
+        return result.scalar_one_or_none()
+
 
 class Product(Base):
     __tablename__ = "products"
@@ -137,6 +149,16 @@ class Product(Base):
     images: Mapped[list["Image"]] = relationship(back_populates="product")
     order_items: Mapped[list["Order"]] = relationship(secondary=order_items, back_populates="products")
     cart_items: Mapped[list["Cart"]] = relationship(secondary=cart_product, back_populates="products")
+
+    @classmethod
+    async def get_by_category_id(cls, db: AsyncSession, category_id: int):
+        stmt = (
+            select(cls)
+            .join(product_category)
+            .where(product_category.c.category_id == category_id)
+        )
+        result = await db.execute(stmt)
+        return result.scalars().all()
 
 
 class Image(Base):

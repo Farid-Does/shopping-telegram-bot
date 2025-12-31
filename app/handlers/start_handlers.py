@@ -1,15 +1,37 @@
 # handlers
 
-from aiogram import Router
-from aiogram.types import Message
+from aiogram import Router, F
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import Command
-from db.models import User
+from db.models import User, Category
 from sqlalchemy.ext.asyncio import AsyncSession
 from keyboards.start_keyboard import starter_keyboard
 
 
+
+# Initial and long messages og the bot
+bot_message1 = "Welcome\nplease click the 'help' button to learn more and contact me more easily."
+bot_message2 = "Hello,\nI am a Telegram bot that you can control and use to purchase our online products."
+bot_message3 = """"you can control and use me by sending these commands:
+'/browsingstore' - explore teh store and our products.
+'/myorders' - view you order history.
+'/order' - order our products by this command.
+'/myactiveorder' - view your active order.
+'/deleteorder' - you can use this order to delete your order,
+ but the order you want to delete must meet the cancellation
+conditions.
+Otherwise, unfortunately, your order can't be canceled.
+'/callrequest' - for phone contact with the store.
+"""
+
+
+
+
+
+
 # bot starting router
 start_router = Router()
+
 
 @start_router.message(Command("start"))
 async def start_and_register_handler(message: Message, db: AsyncSession):
@@ -28,4 +50,22 @@ async def start_and_register_handler(message: Message, db: AsyncSession):
             last_name=last_name
         )
 
-    await message.answer(f"Welcome\nplease click the 'help' button to learn more and contact me more easily.", reply_markup=starter_keyboard)
+    await message.answer(bot_message1, reply_markup=starter_keyboard)
+
+
+@start_router.message( F.text == "help" )
+async def help_handler(message: Message):
+
+    await message.answer(bot_message2)
+    await message.answer(bot_message3)
+
+
+
+    
+
+
+    
+
+
+    
+    
