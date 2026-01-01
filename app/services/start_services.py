@@ -2,7 +2,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from aiogram.types import Message, ReplyKeyboardMarkup
 from db.models import User
 
-# registration function
+
+
+
+# start_handler handler service
 async def register(
         message: Message,
         db: AsyncSession,
@@ -22,5 +25,6 @@ async def register(
             last_name=last_name
         )
 
-    else:
-        return
+    else: return
+
+

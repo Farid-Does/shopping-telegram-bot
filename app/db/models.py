@@ -1,6 +1,5 @@
 # creating models
 
-
 from sqlalchemy import Table, Column, ForeignKey, Integer, String, Text, DateTime, Boolean, Numeric, DECIMAL, UniqueConstraint, BIGINT
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
@@ -8,6 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
+
 
 
 

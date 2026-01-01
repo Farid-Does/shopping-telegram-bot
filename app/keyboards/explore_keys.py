@@ -1,10 +1,10 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+
 
 
 
 # keyboard showing categories
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
-
 async def categories_keyboard_maker(categories_list: list[str], per_row: int = 3):
     buttons = []
 
@@ -12,15 +12,11 @@ async def categories_keyboard_maker(categories_list: list[str], per_row: int = 3
         row = [KeyboardButton(text=title) for title in categories_list[i:i+per_row]]
         buttons.append(row)
 
-
     keyboard = ReplyKeyboardMarkup(
         keyboard=buttons,
         resize_keyboard=True
     )
-
     return keyboard
-
-
 
 
 async def products_keyboard_maker(message: Message, products: list, category_title: str):
@@ -35,7 +31,5 @@ async def products_keyboard_maker(message: Message, products: list, category_tit
             for p in products
         ]
     )
-    await message.answer(
-        f"{category_title} category products:",
-        reply_markup=keyboard
-    )
+
+    return keyboard

@@ -1,8 +1,11 @@
 import asyncio
 from bot import BOT, dp
-from handlers.start_handlers import start_router, admin_router
+from handlers.start_handlers import start_router
 from handlers.explore_handlers import explore_router
+from handlers.admin_handlers import admin_router
 from middlewares.db_session_middleware import DbSessionMiddleware
+
+
 
 
 dp.message.middleware(DbSessionMiddleware())

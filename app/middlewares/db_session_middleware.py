@@ -1,8 +1,9 @@
 # session middleware to inject sessions into handlers
 
-
 from aiogram import BaseMiddleware
 from db.database import async_session
+
+
 
 
 # create db session middleware
