@@ -30,6 +30,7 @@ product_category = Table(
     Column("category_id", ForeignKey("categories.id"), primary_key=True)
 )
 
+
 # Cart ↔ Product
 cart_product = Table(
     "cart_product",
@@ -65,6 +66,7 @@ class User(Base):
     phone_number: Mapped[str | None] = mapped_column(unique=True)
     language_code: Mapped[str] = mapped_column(nullable=False)
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    is_admin: Mapped[bool] = mapped_column(default=False, nullable=False)
     is_blocked: Mapped[bool] = mapped_column(default=False)
 
     messages: Mapped[list["MessageLog"]] = relationship(back_populates="user")
@@ -103,8 +105,15 @@ class User(Base):
             last_name=last_name
         )
         db.add(new_user)
-        
         return new_user
+    
+    @classmethod
+    async def get_full_record_by_telegram_id(cls, db: AsyncSession, telegram_id: int):
+        result = await db.execute(select(cls).where(cls.telegram_id == telegram_id))
+        return result.scalar_one_or_none()
+
+    
+
 
 
 
