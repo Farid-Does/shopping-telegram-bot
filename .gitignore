@@ -1,3 +1,4 @@
 ve/
 .env
 commands.py
+__pycache__/

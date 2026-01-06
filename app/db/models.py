@@ -135,11 +135,10 @@ class Category(Base):
 
     @classmethod
     async def get_by_title(cls, db: AsyncSession, title: str):
-        result = await db.execute(
-            select(cls).where(cls.title == title)
-        )
-        return result.scalar_one_or_none()
-
+        stmt = select(cls).where(cls.title == title)
+        result = await db.execute(stmt)
+        return result.scalars().first()
+        
 
 class Product(Base):
     __tablename__ = "products"
@@ -161,13 +160,31 @@ class Product(Base):
 
     @classmethod
     async def get_by_category_id(cls, db: AsyncSession, category_id: int):
-        stmt = (
-            select(cls)
-            .join(product_category)
-            .where(product_category.c.category_id == category_id)
-        )
+        stmt = select(cls).where(cls.category_id == category_id)
         result = await db.execute(stmt)
         return result.scalars().all()
+    
+    @classmethod
+    async def add_product(
+        cls,
+        db: AsyncSession,
+        category_id: int,
+        title: str,
+        description: str,
+        price: float,
+        discount_price: float,
+        stock_quantity: int
+    ):
+        new_product = cls(
+            category_id=category_id,
+            title=title,
+            description=description,
+            price=price,
+            discount_price=discount_price,
+            stock_quantity=stock_quantity
+        )
+        db.add(new_product)
+        return new_product
 
 
 class Image(Base):
@@ -179,6 +196,22 @@ class Image(Base):
     sort_order: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     product: Mapped["Product"] = relationship(back_populates="images")
+
+    @classmethod
+    async def add_image(
+        cls,
+        db: AsyncSession,
+        product_id: int,
+        image_file_id: str,
+        sort_order: int
+    ):
+        new_image = cls(
+            product_id=product_id,
+            image_file_id=image_file_id,
+            sort_order=sort_order
+        )
+        db.add(new_image)
+        return new_image
 
 
 class MessageLog(Base):

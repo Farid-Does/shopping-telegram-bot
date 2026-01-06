@@ -5,17 +5,18 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import Command
 from db.models import User, Category
 from sqlalchemy.ext.asyncio import AsyncSession
-from keyboards.start_keyboard import starter_keyboard
+from keyboards.static_keyboard import starter_keyboard
 from services.start_services import register
 from dotenv import load_dotenv
 import os
 
 
+load_dotenv("C:/Users/Asus/Desktop/aiogram/shop-bot/bot_long_messages.env")
 
 
-bot_message1 = os.getenv("MESSAGE1")
 bot_message2 = os.getenv("MESSAGE2")
 bot_message3 = os.getenv("MESSAGE3")
+
 
 
 
@@ -25,8 +26,9 @@ start_router = Router()
 @start_router.message(Command("start"))
 async def start_handler(message: Message, db: AsyncSession):
     telegram_id = message.from_user.id
-    await register(message, db, telegram_id)
-    await message.answer(bot_message1, reply_markup=starter_keyboard)
+    bot_answer = await register(message, db, telegram_id)
+    keyboard = starter_keyboard(bot_answer)
+    await message.answer(bot_answer, reply_markup=keyboard)
 
 
 # sending interactive commands to the Telegram bot.
