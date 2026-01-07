@@ -9,7 +9,8 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine: AsyncEngine = create_async_engine(
     DATABASE_URL,
-    echo=True
+    echo=True,
+    connect_args={"server_settings": {"search_path": "aiogram"}}
 )
 
 async_session = sessionmaker(

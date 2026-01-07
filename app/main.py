@@ -2,7 +2,6 @@ import asyncio
 from bot import BOT, dp
 from handlers.start_handlers import start_router
 from handlers.customer_handlers import customer_router
-from handlers.admin_handlers import admin_router
 from middlewares.db_session_middleware import DbSessionMiddleware
 
 
@@ -11,7 +10,6 @@ from middlewares.db_session_middleware import DbSessionMiddleware
 dp.message.middleware(DbSessionMiddleware())
 dp.include_router(start_router)
 dp.include_router(customer_router)
-dp.include_router(admin_router)
 
 
 async def main():
