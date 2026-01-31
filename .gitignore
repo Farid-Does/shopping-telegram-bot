@@ -1,0 +1,9 @@
+
+# dir
+ve/
+__pycache__/
+migrations/
+
+# files
+commands.py
+.env

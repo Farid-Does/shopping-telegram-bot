@@ -1,0 +1,7 @@
+# project packages
+
+django
+aiogram
+dotenv
+asyncpg
+psycopg2
